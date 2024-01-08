@@ -1,6 +1,4 @@
-const express = require("express");
-const fs = require("fs");
-const { Module } = require("module");
+const module = require("module");
 const router = express.Router();
 const dataVideos = "./data/videos.json";
 
@@ -24,7 +22,7 @@ router.get("/videos/:id", (req, res) => {
   }
 });
 
-router.post("videos/:id/comments", (req, res) => {
+router.post("/videos/:id/comments", (req, res) => {
   const videos = readData();
   const video = videos.find((video) => video.id === req.params.id);
   if (!video) {
@@ -42,8 +40,8 @@ function readData() {
   }
 }
 
-function writeData() {
-  fs.writeFileSync(dataVideos, JSON.stringify);
+function writeData(data) {
+  fs.writeFileSync(dataVideos, JSON.stringify(data));
 }
 
 module.exports = router;

@@ -6,12 +6,15 @@ const dataVideos = "./data/videos.json";
 const videosRouter = "./routes/videos.js";
 app.use(express.json());
 
-const PORT = process.env.PORT || 3001;
+require("dotenv").config();
+
+const { PORT, BACKEND_URL } = process.env;
+
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
 app.use(cors());
-app.use("./routes/videos.js", videosRouter);
+app.use("/videos", require(videosRouter));
 
 function readData() {
   try {

@@ -2,6 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const dataVideos = "./data/videos.json";
+const { v4: uuidv4 } = require("uuid");
+
 
 router.get("/videos", (req, res) => {
   const videos = readData().map((video) => ({
@@ -23,14 +25,28 @@ router.get("/videos/:id", (req, res) => {
   }
 });
 
-router.post("/videos/:id/comments", (req, res) => {
+router.post('/videos', (req, res) => {
   const videos = readData();
-  const video = videos.find((video) => video.id === req.params.id);
-  if (!video) {
-    return res.status(404).send({ message: "Video not found" });
-  }
-  const newComment = {};
+  const newVideoId = uuidv4();
+  const newVideo = {
+    id: newVideoId,
+    title: req.body.title,
+    channel: req.body.channel,
+    image: req.body.image,
+  };
+  videos.push(newVideo);
+  writeData(videos);
+  res.status(201).json(newVideo);
 });
+
+// router.post("/videos/:id/comments", (req, res) => {
+//   const videos = readData();
+//   const video = videos.find((video) => video.id === req.params.id);
+//   if (!video) {
+//     return res.status(404).send({ message: "Video not found" });
+//   }
+//   const newComment = {};
+// });
 
 function readData() {
   try {
@@ -46,3 +62,4 @@ function writeData(data) {
 }
 
 module.exports = router;
+exports.router = router;

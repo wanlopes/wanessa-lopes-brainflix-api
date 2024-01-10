@@ -4,6 +4,7 @@ const router = express.Router();
 const dataVideos = "./data/videos.json";
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
+// C:\dev\Brainstation\wanessa-lopes-bracurl https://i.imgur.com/l2Xfgpl.jpg -O picture.jpg
 
 router.get("/", (req, res) => {
   const videos = readData().map((video) => ({

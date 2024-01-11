@@ -44,14 +44,42 @@ router.post("/", (req, res) => {
   res.status(201).json(newVideo);
 });
 
-// router.post("/videos/:id/comments", (req, res) => {
-//   const videos = readData();
-//   const video = videos.find((video) => video.id === req.params.id);
-//   if (!video) {
-//     return res.status(404).send({ message: "Video not found" });
-//   }
-//   const newComment = {};
-// });
+router.post("/:videoId/comments", (req, res) => {
+  const videos = readData();
+
+  const video = videos.find((video) => video.id === req.params.id);
+  if (!video) {
+    return res.status(404).send({ message: "Video not found" });
+  }
+  const newComment = {
+    id: uuidv4(),
+    name: req.body.name,
+    comment: req.body.comment,
+    timestamp: Date.now(),
+  };
+  video.comments.push(newComment);
+  writeData(videos);
+
+  res.status(201).json(newComment);
+});
+
+router.delete("/videoId/comments/:commentId", (req, res) => {
+  const videoId = req.params.videoId;
+  const commentId = req.params.commentId;
+
+  const filterVideos = readData().map((video) => {
+    if(video.id === videoId) {
+      video.comments = video.comments.filter((comment) => comment.id !== commentId);
+    }
+    return video;
+    }
+  );
+
+  writeData(filterVideos);
+  
+  res.status(204).send("Video deleted successfully!");
+});  
+
 
 function readData() {
   try {

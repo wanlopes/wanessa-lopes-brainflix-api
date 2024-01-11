@@ -44,9 +44,8 @@ router.post("/", (req, res) => {
   res.status(201).json(newVideo);
 });
 
-router.post("/:videoId/comments", (req, res) => {
+router.post("/:id/comments", (req, res) => {
   const videos = readData();
-
   const video = videos.find((video) => video.id === req.params.id);
   if (!video) {
     return res.status(404).send({ message: "Video not found" });
@@ -68,18 +67,18 @@ router.delete("/videoId/comments/:commentId", (req, res) => {
   const commentId = req.params.commentId;
 
   const filterVideos = readData().map((video) => {
-    if(video.id === videoId) {
-      video.comments = video.comments.filter((comment) => comment.id !== commentId);
+    if (video.id === videoId) {
+      video.comments = video.comments.filter(
+        (comment) => comment.id !== commentId
+      );
     }
     return video;
-    }
-  );
+  });
 
   writeData(filterVideos);
-  
-  res.status(204).send("Video deleted successfully!");
-});  
 
+  res.status(204).send("Video deleted successfully!");
+});
 
 function readData() {
   try {

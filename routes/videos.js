@@ -12,10 +12,6 @@ router.get("/", (req, res) => {
     channel: video.channel,
     image: video.image,
   }));
-  readData().forEach((element) => {
-    console.log(element.image);
-  });
-
   res.send(videos);
 });
 
@@ -29,14 +25,17 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", cors, (req, res) => {
+router.post("/", (req, res) => {
   const videos = readData();
   const newVideoId = uuidv4();
   const newVideo = {
     id: newVideoId,
     title: req.body.title,
     channel: req.body.channel,
+    name: req.body.name,
     image: req.body.image,
+    comments: req.body.comments,
+    timestamp: Date.now(),
   };
   console.log(newVideo);
   videos.push(newVideo);

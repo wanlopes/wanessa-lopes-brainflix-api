@@ -15,5 +15,5 @@ app.listen(PORT, () => {
 });
 
 const { CORS_ORIGIN } = process.env;
-app.use(cors({ origin: CORS_ORIGIN }));
+app.use(cors({ origin: "*" }));
 app.use("/videos", videosRouter);

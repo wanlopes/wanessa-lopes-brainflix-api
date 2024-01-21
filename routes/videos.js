@@ -1,10 +1,9 @@
-// const module = require('module');
 const express = require("express");
 const router = express.Router();
 const dataVideos = "./data/videos.json";
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
-// C:\dev\Brainstation\wanessa-lopes-bracurl https://i.imgur.com/l2Xfgpl.jpg -O picture.jpg
+var cors = require("cors");
 
 router.get("/", (req, res) => {
   const videos = readData().map((video) => ({
@@ -30,7 +29,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", cors, (req, res) => {
   const videos = readData();
   const newVideoId = uuidv4();
   const newVideo = {
@@ -39,6 +38,7 @@ router.post("/", (req, res) => {
     channel: req.body.channel,
     image: req.body.image,
   };
+  console.log(newVideo);
   videos.push(newVideo);
   writeData(videos);
   res.status(201).json(newVideo);
